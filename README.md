@@ -20,3 +20,5 @@ truffle test
 # License
 
 MIT
+List ports in use. Use for Vagrant Geth
+`sudo lsof -i -P -n | grep LISTEN`

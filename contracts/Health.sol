@@ -2,7 +2,6 @@ pragma solidity ^0.4.4;
 
 
 contract Health {
-
   /**
    * @notice a mapping of companies to companyAddress public keys
    *
