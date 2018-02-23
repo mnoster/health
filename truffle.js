@@ -20,11 +20,12 @@ module.exports = {
     // },
     // For Private Quorum 
     development: {
-      host: "54.214.107.168",
+      host: "localhost",
       port: 8545, // was 8545
+//provider: new HDWalletProvider(mnemonic, 'http://localhost:8545'),
       network_id: "*", // Match any network id
       gasPrice: 0,
-      gas: 450000000
+      gas: 4500000
     },
     rinkeby: {
       provider: new HDWalletProvider(mnemonic, 'https://rinkeby.infura.io'),

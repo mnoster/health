@@ -21,12 +21,12 @@ contract Health {
 
    /**
     * @notice a mapping of publsher companies to
-    * their hashes of authorized Medicines
+    * their hashes of authorized Records
     *
     * @example example
-    * Medicines[keccak256(company)][MedicineHash] -> MedicineHash
+    * records[keccak256(company)][RecordHash] ->RecordHash
     */
-  mapping (bytes32 => mapping (bytes32 => bytes32)) public medicines;
+  mapping (bytes32 => mapping (bytes32 => bytes32)) public records;
 
   /**
    * @notice The owner of this contract.
@@ -40,8 +40,8 @@ contract Health {
   event _CompanyAddressRegistered(bytes32 indexed company, address indexed companyAddressKey);
   event _CompanyAddressUpdated(bytes32 indexed company, address indexed companyAddressKey);
   event _CompanyAddressDeregistered(bytes32 indexed company, address indexed companyAddressKey);
-  event _MedicineAdded(bytes32 indexed company, bytes32 indexed medicineHash);
-  event _MedicineRemoved(bytes32 indexed company, bytes32 indexed medicineHash);
+  event _RecordAdded(bytes32 indexed company, bytes32 indexed recordHash);
+  event _RecordRemoved(bytes32 indexed company, bytes32 indexed recordHash);
 
   /**
    * @notice modifier which limits execution
@@ -154,18 +154,18 @@ contract Health {
    * @notice Allow companyAddress to add a Medicine by the hash of the Medicine information.
    * @param hash keccak256 hash of Medicine information
    */
-  function addMedicineRecord(bytes32 hash) isRegistered public {
-    medicines[keccak256(companies[msg.sender])][hash] = hash;
-   _MedicineAdded(companies[msg.sender], hash);
+  function addRecord(bytes32 hash) isRegistered public {
+    records[keccak256(companies[msg.sender])][hash] = hash;
+   _RecordAdded(companies[msg.sender], hash);
   }
 
   /**
    * @notice Allow companyAddress to add multiple Medicines by providing an array of hashes of the Medicine information.
    * @param hashes an array of hashes of Medicine information
    */
-  function addMedicineRecords(bytes32[] hashes) isRegistered public {
+  function addRecords(bytes32[] hashes) isRegistered public {
     for (uint256 i = 0; i < hashes.length; i++) {
-      addMedicineRecord(hashes[i]);
+      addRecord(hashes[i]);
     }
   }
 
@@ -173,18 +173,18 @@ contract Health {
    * @notice Remove Medicine from companyAddress
    * @param hash keccak256 hash of Medicine information
    */
-  function removeMedicineRecord(bytes32 hash) isRegistered public {
-    delete medicines[keccak256(companies[msg.sender])][hash];
-   _MedicineRemoved(companies[msg.sender], hash);
+  function removeRecord(bytes32 hash) isRegistered public {
+    delete records[keccak256(companies[msg.sender])][hash];
+   _RecordRemoved(companies[msg.sender], hash);
   }
 
   /**
    * @notice Allow companyAddress to remove multiple Medicines by providing an array of hashes of the Medicine information.
    * @param hashes an array of hashes of the Medicine information
    */
-  function removeMedicineRecords(bytes32[] hashes) isRegistered public {
+  function removeRecords(bytes32[] hashes) isRegistered public {
     for (uint256 i = 0; i < hashes.length; i++) {
-      removeMedicineRecord(hashes[i]);
+      removeRecord(hashes[i]);
     }
   }
 
@@ -218,25 +218,25 @@ contract Health {
   /**
    * @notice Return true if is Medicine for companyAddress
    * @param pubKey companyAddress public key
-   * @param timestamp companies of Medicine
-   * @param medType associated with Medicine or reMedicine in advertising system 
-   * @param location Relationship of Medicine. (Direct: 0, ReMedicine: 1)
-   * @param optional Optional Params (tagId, format, region)
+   * @param timestamp 
+   * @param tableId associated with 
+   * @param fromAccountId 
+   * @param data Optional Params 
    * @return boolean
    */
   function doesRecordExistForCompany(
     address pubKey,
     uint timestamp,
-    string medType,
-    string location,
-    string optional
+    string tableId,
+    uint fromAccountId,
+    string data
   )
   external
   constant
   returns (bool) 
   {
-    bytes32 hash = keccak256(timestamp, medType, location, optional);
-    return (medicines[keccak256(companies[pubKey])][hash] != "");
+    bytes32 hash = keccak256(timestamp, tableId, fromAccountId, data);
+    return (records[keccak256(companies[pubKey])][hash] != "");
   }
 }
 
