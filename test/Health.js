@@ -37,12 +37,11 @@ function getLastEvent(instance) {
 }
 
 contract('Health', function (accounts) {
-  //const owner = accounts[0]
-    const owner  = "0x03e277534906765629a2b278aff9a5cfb895045a";
+  const owner = accounts[0]
 
-	accounts = ["0x03e277534906765629a2b278aff9a5cfb895045a","0x25d277534906765629a2b278aff9a5cfb895045c"]
   it('should register company under companyAddress', async () => {
     const instance = await Health.deployed()
+
     const companyAddress = accounts[1]
     const isRegistered = await instance.isRegisteredCompanyAddress(companyAddress)
     assert.equal(isRegistered, false)

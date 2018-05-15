@@ -23,7 +23,9 @@
     "truffle-hdwallet-provider": "0.0.3"
   },
   "dependencies": {
-    "truffle": "^4.0.1"
+    "ethereumjs-wallet": "^0.6.0",
+    "truffle": "^4.0.1",
+    "truffle-wallet-provider": "0.0.5"
   },
   "author": "",
   "license": "ISC"
